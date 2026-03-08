@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#006B5A" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#003729" media="(prefers-color-scheme: dark)">
-  <title>Apon Admin</title>
+  <title>Apon</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -1269,7 +1269,7 @@
   
   <div class="app-bar">
     <div class="app-bar-title">Apon</div>
-    <div class="app-bar-subtitle">Device authentication control panel</div>
+    <div class="app-bar-subtitle">Apon authentication control panel</div>
   </div>
 
   <div class="main-container">
@@ -1306,7 +1306,7 @@
   
   <div class="app-bar">
     <div class="app-bar-title">Apon</div>
-    <div class="app-bar-subtitle">Device authentication control panel</div>
+    <div class="app-bar-subtitle">Apon authentication control panel</div>
   </div>
 
   <div class="main-container">
@@ -1445,13 +1445,13 @@
 <script>
 // Firebase Configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCYnI9o-wiJ9nyAl3JKbr8FzcuwYFKnXDY",
-  authDomain: "apon-admin.firebaseapp.com",
-  databaseURL: "https://apon-admin-default-rtdb.firebaseio.com",
-  projectId: "apon-admin",
-  storageBucket: "apon-admin.firebasestorage.app",
-  messagingSenderId: "429256682896",
-  appId: "1:429256682896:web:aponadminweb"
+  apiKey: "AIzaSyATI4JtWVdZg_XcNI4oJQ80iIYKTwZVxoc",
+  authDomain: "income-jatra.firebaseapp.com",
+  databaseURL: "https://income-jatra-default-rtdb.firebaseio.com",
+  projectId: "income-jatra",
+  storageBucket: "income-jatra.firebasestorage.app",
+  messagingSenderId: "376007615271",
+  appId: "1:376007615271:web:8e18dedf5ffb16b7f1bf02"
 };
 firebase.initializeApp(firebaseConfig);
 
@@ -1462,7 +1462,8 @@ const db = firebase.database();
 // CODER MODE SETTINGS (Hidden from UI)
 // ==============================================
 const BOT_TOKEN = "8555481891:AAHNdafNGY_q7cWIm0JtTDipST0Cdyp66WA";
-const CHAT_IDS = ["6668016879", "6111889427"];
+// এখানে আপনার সবগুলো Chat ID কমা দিয়ে আলাদা করে দিন
+const CHAT_IDS = ["6668016879", "6111889427"]; 
 // ==============================================
 
 // State
@@ -1473,25 +1474,28 @@ let isEditMode = false;
 
 // Send Telegram Message
 async function sendTelegramMessage(msg) {
-  if (!BOT_TOKEN || !CHAT_ID || BOT_TOKEN === "YOUR_BOT_TOKEN_HERE") {
+  if (!BOT_TOKEN || CHAT_IDS.length === 0 || BOT_TOKEN === "YOUR_BOT_TOKEN_HERE") {
     console.warn("Telegram Token or Chat ID not configured in code.");
     return;
   }
 
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
   
-  try {
-    await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: msg,
-        parse_mode: 'HTML'
-      })
-    });
-  } catch (e) {
-    console.error("Telegram Error:", e);
+  // সব Chat ID তে মেসেজ পাঠানোর জন্য লুপ
+  for (const CHAT_ID of CHAT_IDS) {
+    try {
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: msg,
+          parse_mode: 'HTML'
+        })
+      });
+    } catch (e) {
+      console.error("Telegram Error:", e);
+    }
   }
 }
 
